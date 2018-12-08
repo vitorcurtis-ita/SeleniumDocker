@@ -9,8 +9,9 @@
 FROM jupyter/datascience-notebook
 
 LABEL maintainer="Vitor Curtis <curtis@ita.br>"
-ENV CHROME_VER=2.44
-ENV FIREFOX_VER=0.23.0
+
+ENV CHROME_VER=$(curl --silent https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+ENV FIREFOX_VER=$(curl --silent https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
 
 # Set when building on Travis so that certain long-running build steps can
 # be skipped to shorten build time.
