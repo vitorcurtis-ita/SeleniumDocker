@@ -10,8 +10,8 @@ FROM jupyter/datascience-notebook
 
 LABEL maintainer="Vitor Curtis <curtis@ita.br>"
 
-ENV CHROME_VER=$(curl --silent https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-ENV FIREFOX_VER=$(curl --silent https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
+ENV CHROME_VER=2.44
+ENV FIREFOX_VER=v0.23.0
 
 # Set when building on Travis so that certain long-running build steps can
 # be skipped to shorten build time.
@@ -36,13 +36,15 @@ USER $NB_UID
 RUN pip install selenium
 
 # Chrome driver
+#RUN CHROME_VER=$(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
 RUN wget -q https://chromedriver.storage.googleapis.com/${CHROME_VER}/chromedriver_linux64.zip && \
 	unzip -o chromedriver_linux64.zip && \
 	rm chromedriver_linux64.zip && \
 	mv chromedriver /opt/conda/bin
 
 # Firefox driver
-RUN wget -qO- https://github.com/mozilla/geckodriver/releases/download/v${FIREFOX_VER}/geckodriver-v${FIREFOX_VER}-linux64.tar.gz | tar -xvz -C /opt/conda/bin
+#RUN FIREFOX_VER=$(wget -qO- https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep -Po '"tag_name": "\K.*?(?=")') && \
+RUN wget -qO- https://github.com/mozilla/geckodriver/releases/download/${FIREFOX_VER}/geckodriver-${FIREFOX_VER}-linux64.tar.gz | tar -xvz -C /opt/conda/bin
 
 
 
